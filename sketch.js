@@ -11,7 +11,7 @@ let engine;
 let world;
 var ball;
 var blower;
-var blowerMouth;
+var blower2;
 var button;
 
 function setup() {
@@ -19,26 +19,38 @@ function setup() {
 
   engine = Engine.create();
   world = engine.world;
+  
+   var options = {
+     isStatic: true
+   }
 
-  ball = new Ball(width / 2 + 80, height / 2 - 80, 80, 80);
-  blower = new Blower(width / 2 - 50, height / 2 + 50, 150, 20);
-  blowerMouth = new BlowerMouth(width / 2 + 70, height / 2 + 20, 100, 90);
-  button = createButton("Clique para Assoprar");
+  ball = Bodies.circle(width / 2 + 80, height / 2 - 80, 40);
+  World.add(world,ball);
+  blower = Bodies.rectangle(width / 2 - 50, height / 2 + 50, 150, 20, options);
+  World.add(world,blower);
+  blower2 = Bodies.rectangle(width / 2 + 70, height / 2 + 20, 100, 90, options);
+  World.add(world,blower2);
+
+  button = createImg("push.png");
   button.position(width / 2, height - 100);
-  button.class("blowButton");
-  button.mousePressed(blow);
+  //button.class("blowButton");
+  button.size(50,50)
+  button.mouseClicked(blow);
 }
 
 function draw() {
   background(59);
   Engine.update(engine);
 
-  blower.show();
-  ball.show();
-  blowerMouth.show();
+  ellipseMode(RADIUS);
+  rectMode(CENTER)
+
+  ellipse(ball.position.x, ball.position.y, 40, 40);
+  rect(blower.position.x, blower.position.y, 150, 20);
+  rect(blower2.position.x, blower2.position.y, 100, 90);
 }
 
 function blow() {
-  Matter.Body.applyForce(ball.body, {x:0, y:0}, {x:0, y:0.05});
+  Matter.Body.applyForce(ball, {x:0, y:0}, {x:-0.005, y:-0.05});
 }
 
